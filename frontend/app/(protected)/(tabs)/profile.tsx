@@ -1,4 +1,5 @@
 import { useUserStore } from "@/lib/store";
+import { router } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 
@@ -7,6 +8,7 @@ export default function Index() {
 
 	function handleLogout() {
 		logout();
+		router.replace("/(auth)/auth")
 	}
 
 	return (

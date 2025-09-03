@@ -15,6 +15,7 @@ export default function AuthScreen() {
 	const [isSignup, setIsSignup] = useState<boolean>(false);
 	const [isAnon, setAnon] = useState<boolean>(false);
 	const [email, setEmail] = useState<string>("");
+	const [fullName, setfullName] = useState<string>("");
 	const [phone, setPhone] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [error, setIsError] = useState<string | null>(null);
@@ -26,7 +27,7 @@ export default function AuthScreen() {
 	const checkAuth = useUserStore((state) => state.checkSession);
 	const [authorized, setAuthorized] = useState(false);
 
-	const kenyanPhoneRegex = /^2547\d{8}$/;
+	const kenyanPhoneRegex = /^(?:2547\d{8}|07\d{8})$/;
 
 	function changeMode() {
 		setIsSignup((prev) => !prev);
@@ -87,6 +88,19 @@ export default function AuthScreen() {
 				<Text style={styles.title}>
 					{isSignup ? "Create an" : "Login to your"} account
 				</Text>
+				{isSignup ? (<TextInput
+					style={styles.input}
+					label={"full-name"}
+					autoCapitalize="none"
+					keyboardType="default"
+					placeholder="john doe"
+					mode="outlined"
+					maxLength={40}
+					onChangeText={(val) => {
+						setfullName(val);
+						if (error) setIsError(null);
+					}}
+				/>) : ""}
 				<TextInput
 					style={styles.input}
 					label={"email"}
@@ -150,9 +164,10 @@ export default function AuthScreen() {
 						? "Already have an account? Sign in"
 						: "Don't have an account? Sign up"}
 				</Button>
-				<Button style={styles.button} onPress={guestMode} mode="outlined">
+				{isSignup ? "" : <Button style={styles.button} onPress={guestMode} mode="outlined">
 					Continue as a guest
-				</Button>
+				</Button>}
+
 			</View>
 		</KeyboardAvoidingView>
 	);
@@ -165,8 +180,8 @@ const styles = StyleSheet.create({
 		padding: 16,
 	},
 	title1: {
-		position: "absolute",
-		top: 40,
+		position: "relative",
+		top: 30,
 		left: 0,
 		right: 0,
 		textAlign: "center",

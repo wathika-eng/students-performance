@@ -1,29 +1,26 @@
+import { useUserStore } from "@/lib/store";
 import { Slot, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 
 export default function ProtectedLayout() {
     const router = useRouter();
-    // let user = useUserStore((s) => s.checkSession());
-    // console.log(user);
-    // let user = true;
+    const user = useUserStore((s) => s.user); // get user directly from store
+    const checkSession = useUserStore((s) => s.checkSession);
 
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            const user = {
-                id: "1",
-                email: "kamaa@gmail.com",
-                phone_number: "0712345",
-            };
-            console.log(`user at ${user}`);
-            if (!user || user === undefined) router.replace("/auth");
-            else setLoading(false);
-        }, 0);
-
-        return () => clearTimeout(timer);
-    }, [router]);
+        const verifySession = async () => {
+            const sessionUser = await checkSession();
+            if (!sessionUser) {
+                router.replace("/auth");
+            } else {
+                setLoading(false);
+            }
+        };
+        verifySession();
+    }, [checkSession, router]);
 
     if (loading) {
         return (
