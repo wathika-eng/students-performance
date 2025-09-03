@@ -80,6 +80,9 @@ export default function AuthScreen() {
 			behavior={Platform.OS === "ios" ? "padding" : "height"}
 			style={styles.container}
 		>
+			<View>
+				<Text style={styles.title1}>Tusome Students Performance App</Text>
+			</View>
 			<View style={styles.content}>
 				<Text style={styles.title}>
 					{isSignup ? "Create an" : "Login to your"} account
@@ -160,6 +163,15 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		backgroundColor: "#f5f5f5",
 		padding: 16,
+	},
+	title1: {
+		position: "absolute",
+		top: 40,
+		left: 0,
+		right: 0,
+		textAlign: "center",
+		fontSize: 30,
+		fontWeight: "900",
 	},
 	card: {
 		borderRadius: 16,

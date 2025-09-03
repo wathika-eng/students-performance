@@ -82,6 +82,7 @@ export const useUserStore = create<UserAuthStore>()(
 
       checkSession: (): boolean | User => {
         const { isGuest, guestExpiry, logout, user } = get();
+        console.log(user?.email);
         if (isGuest && guestExpiry && Date.now() > guestExpiry) {
           logout();
           return false;

@@ -10,10 +10,10 @@ export default function TabsLayout() {
 			<Tabs.Screen
 				name="index"
 				options={{
-					title: "home",
+					title: "Class Performance Overview",
 					tabBarIcon: ({ focused }) => {
 						return focused ? (
-							<Icon source="home" size={20} color={MD3Colors.error50} />
+							<Icon source="home" size={24} color={MD3Colors.error50} />
 						) : (
 							<Icon source="home" size={20} />
 						);
@@ -21,11 +21,25 @@ export default function TabsLayout() {
 				}}
 			></Tabs.Screen>
 			<Tabs.Screen
-				name="profile"
+				name="studyPlan"
 				options={{
+					title: "Study plan",
 					tabBarIcon: ({ focused }) => {
 						return focused ? (
-							<Icon source="account" size={20} color={MD3Colors.error50} />
+							<Icon source="calendar" size={24} color={MD3Colors.error50} />
+						) : (
+							<Icon source="calendar" size={20} />
+						);
+					},
+				}}
+			></Tabs.Screen>
+			<Tabs.Screen
+				name="profile"
+				options={{
+					title: "Profile",
+					tabBarIcon: ({ focused }) => {
+						return focused ? (
+							<Icon source="account" size={24} color={MD3Colors.error50} />
 						) : (
 							<Icon source="account" size={20} />
 						);
