@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 
+
 export default function AuthScreen() {
 	// const theme = useTheme();
 	const [isSignup, setIsSignup] = useState<boolean>(false);
@@ -24,8 +25,6 @@ export default function AuthScreen() {
 	const login = useUserStore((state) => state.login);
 	const signup = useUserStore((state) => state.signup);
 	const guest = useUserStore((state) => state.startGuestSession);
-	const checkAuth = useUserStore((state) => state.checkSession);
-	const [authorized, setAuthorized] = useState(false);
 
 	const kenyanPhoneRegex = /^(?:2547\d{8}|07\d{8})$/;
 
@@ -34,11 +33,11 @@ export default function AuthScreen() {
 		setIsError(null);
 	}
 
-	function guestMode() {
+	async function guestMode() {
 		setAnon(true);
 		guest();
-		router.prefetch("/profile");
-		router.push("/profile");
+		router.prefetch("/");
+		router.push("/");
 		return;
 	}
 
@@ -151,6 +150,7 @@ export default function AuthScreen() {
 				/>
 
 				{error && <Text style={styles.error}>{error}</Text>}
+				{/*disabled={!email || !password} */}
 				<Button style={styles.button} onPress={handleAuth} mode="contained">
 					{isSignup ? "Sign up" : "Login"}
 				</Button>
@@ -161,6 +161,7 @@ export default function AuthScreen() {
 					mode="contained-tonal"
 				>
 					{isSignup
+
 						? "Already have an account? Sign in"
 						: "Don't have an account? Sign up"}
 				</Button>

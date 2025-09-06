@@ -1,5 +1,5 @@
 import { useUserStore } from "@/lib/store";
-import { Slot, useRouter } from "expo-router";
+import { Slot, useRouter, useSegments } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 
@@ -7,20 +7,29 @@ export default function ProtectedLayout() {
     const router = useRouter();
     const user = useUserStore((s) => s.user); // get user directly from store
     const checkSession = useUserStore((s) => s.checkSession);
+    // where the user is
+    const segments = useSegments()
 
     const [loading, setLoading] = useState(true);
-
+    console.log(`User at auth screen ${user?.email}`)
     useEffect(() => {
-        const verifySession = async () => {
-            const sessionUser = await checkSession();
-            if (!sessionUser) {
+        async function checkAuth() {
+            const isAuthPage = segments[0] === "auth"
+            const session = await checkSession();
+            console.log("Checking session")
+            if (user === null || !session && !isAuthPage) {
+                console.log(`before going to profile ${user?.email}`)
                 router.replace("/auth");
-            } else {
+            } else if (user?.email !== "" && isAuthPage) {
+                console.log(`now going to profile ${user?.email}`)
+                router.replace("/")
                 setLoading(false);
             }
-        };
-        verifySession();
-    }, [checkSession, router]);
+            setLoading(false)
+            console.log(`finally ${user?.email}`)
+        }
+        checkAuth();
+    }, [router, segments, user, checkSession])
 
     if (loading) {
         return (

@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { Platform } from "react-native";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import axios from "axios";
 
 const API = process.env.EXPO_PUBLIC_API_URL;
 
@@ -12,7 +13,7 @@ if (!API) {
 console.log(API);
 
 export type User = {
-  fullName: string;
+  fullName?: string;
   id?: string;
   email: string;
   phone_number?: string;
@@ -27,8 +28,18 @@ type UserAuthStore = {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   startGuestSession: () => void;
-  checkSession: () => Promise<boolean | User>;
+  checkSession: () => Promise<boolean | User | null>;
 };
+
+const storage =
+  Platform.OS === "web"
+    ? createJSONStorage(() => {
+        if (typeof window === "undefined" || !window.localStorage) {
+          throw new Error("localStorage is not available");
+        }
+        return window.localStorage;
+      })
+    : createJSONStorage(() => AsyncStorage);
 
 export const useUserStore = create<UserAuthStore>()(
   persist(
@@ -95,7 +106,11 @@ export const useUserStore = create<UserAuthStore>()(
 
         // Remove persisted user from storage
         try {
-          await AsyncStorage.removeItem("user");
+          if (Platform.OS !== "web") {
+            await AsyncStorage.removeItem("users-storage");
+          } else {
+            localStorage.removeItem("users-storage");
+          }
           console.log("User logged out and storage cleared");
         } catch (e) {
           console.error("Failed to clear AsyncStorage on logout", e);
@@ -115,27 +130,38 @@ export const useUserStore = create<UserAuthStore>()(
       checkSession: async () => {
         const { isGuest, guestExpiry, logout, user } = get();
 
-        // optional: persist user on AsyncStorage for web/mobile consistency
-        const storedUser = await AsyncStorage.getItem("user");
-        const parsedUser: User | null = storedUser
-          ? JSON.parse(storedUser)
-          : null;
-
-        const currentUser = user || parsedUser;
+        // // optional: persist user on AsyncStorage for web/mobile consistency
+        // let parsedUser = null;
+        // if (Platform.OS !== "web") {
+        //   const storedUser = await AsyncStorage.getItem("user");
+        //   parsedUser = storedUser ? JSON.parse(storedUser) : null;
+        // } else {
+        //   // fallback for web
+        //   console.log("Checking website");
+        //   const storedUser =
+        //     typeof window !== "undefined"
+        //       ? window.localStorage.getItem("user")
+        //       : null;
+        //   parsedUser = storedUser ? JSON.parse(storedUser) : null;
+        // }
+        // const currentUser = user || parsedUser;
 
         if (isGuest && guestExpiry && Date.now() > guestExpiry) {
           logout();
-          await AsyncStorage.removeItem("user");
+          if (Platform.OS !== "web") {
+            await AsyncStorage.removeItem("user");
+          } else {
+            window.localStorage.removeItem("user");
+          }
           return false;
         }
 
-        if (currentUser) return currentUser;
-        return false;
+        return user || null;
       },
     }),
     {
       name: "users-storage",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: storage,
     }
   )
 );

@@ -1,51 +1,64 @@
 import { Tabs } from "expo-router";
+import { StyleSheet } from "react-native";
 import { Icon, MD3Colors } from "react-native-paper";
-// define screens
+
 export default function TabsLayout() {
-	// define screens, name and title
-	// change Tabs to become tabs
-	// configure if focused e.t.c and switching
 	return (
-		<Tabs screenOptions={{ tabBarActiveBackgroundColor: "lavender" }}>
+		<Tabs
+			screenOptions={{
+				tabBarActiveBackgroundColor: "lavender",
+				tabBarActiveTintColor: MD3Colors.error50,
+				tabBarLabelStyle: { fontSize: 12, fontWeight: "600" },
+				headerTitleStyle: styles.title,
+			}}
+		>
 			<Tabs.Screen
 				name="index"
 				options={{
-					title: "Class Performance Overview",
-					tabBarIcon: ({ focused }) => {
-						return focused ? (
-							<Icon source="home" size={24} color={MD3Colors.error50} />
-						) : (
-							<Icon source="home" size={20} />
-						);
-					},
+					title: "Overview",
+					tabBarIcon: ({ focused, color }) => (
+						<Icon
+							source="home"
+							size={focused ? 24 : 20}
+							color={focused ? MD3Colors.error50 : color}
+						/>
+					),
 				}}
-			></Tabs.Screen>
+			/>
 			<Tabs.Screen
-				name="studyPlan"
+				name="details"
 				options={{
-					title: "Study plan",
-					tabBarIcon: ({ focused }) => {
-						return focused ? (
-							<Icon source="calendar" size={24} color={MD3Colors.error50} />
-						) : (
-							<Icon source="calendar" size={20} />
-						);
-					},
+					title: "Details",
+					tabBarIcon: ({ focused, color }) => (
+						<Icon
+							source="school"
+							size={focused ? 24 : 20}
+							color={focused ? MD3Colors.error50 : color}
+						/>
+					),
 				}}
-			></Tabs.Screen>
+			/>
 			<Tabs.Screen
 				name="profile"
 				options={{
 					title: "Profile",
-					tabBarIcon: ({ focused }) => {
-						return focused ? (
-							<Icon source="account" size={24} color={MD3Colors.error50} />
-						) : (
-							<Icon source="account" size={20} />
-						);
-					},
+					tabBarIcon: ({ focused, color }) => (
+						<Icon
+							source="account"
+							size={focused ? 24 : 20}
+							color={focused ? MD3Colors.error50 : color}
+						/>
+					),
 				}}
-			></Tabs.Screen>
+			/>
 		</Tabs>
 	);
 }
+
+const styles = StyleSheet.create({
+	title: {
+		textAlign: "center",
+		fontWeight: "bold",
+		fontSize: 18,
+	},
+});
