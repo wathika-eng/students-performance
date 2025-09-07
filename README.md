@@ -24,6 +24,16 @@ text - displays text content on the screen
 
 (tabs) - special folder for tabs/grouping screens/collection of strings
 
-backend ![alt text](image.png)
+### image demos
 
-frontend ![alt text](image-1.png)
+Login Page
+
+![/images/login.png](images/login.png)
+
+Overview Page
+
+![/images/overview.png](images/overview.png)
+
+Profile page
+
+![/images/profile.png](images/profile.png)
