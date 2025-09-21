@@ -130,21 +130,21 @@ export const useUserStore = create<UserAuthStore>()(
       checkSession: async () => {
         const { isGuest, guestExpiry, logout, user } = get();
 
-        // // optional: persist user on AsyncStorage for web/mobile consistency
-        // let parsedUser = null;
-        // if (Platform.OS !== "web") {
-        //   const storedUser = await AsyncStorage.getItem("user");
-        //   parsedUser = storedUser ? JSON.parse(storedUser) : null;
-        // } else {
-        //   // fallback for web
-        //   console.log("Checking website");
-        //   const storedUser =
-        //     typeof window !== "undefined"
-        //       ? window.localStorage.getItem("user")
-        //       : null;
-        //   parsedUser = storedUser ? JSON.parse(storedUser) : null;
-        // }
-        // const currentUser = user || parsedUser;
+        // optional: persist user on AsyncStorage for web/mobile consistency
+        let parsedUser = null;
+        if (Platform.OS !== "web") {
+          const storedUser = await AsyncStorage.getItem("user");
+          parsedUser = storedUser ? JSON.parse(storedUser) : null;
+        } else {
+          // fallback for web
+          console.log("Checking website");
+          const storedUser =
+            typeof window !== "undefined"
+              ? window.localStorage.getItem("user")
+              : null;
+          parsedUser = storedUser ? JSON.parse(storedUser) : null;
+        }
+        const currentUser = user || parsedUser;
 
         if (isGuest && guestExpiry && Date.now() > guestExpiry) {
           logout();
@@ -156,7 +156,7 @@ export const useUserStore = create<UserAuthStore>()(
           return false;
         }
 
-        return user || null;
+        return currentUser || null;
       },
     }),
     {
