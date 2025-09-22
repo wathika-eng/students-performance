@@ -4,8 +4,10 @@ go 1.25.1
 
 require (
 	github.com/gofiber/fiber/v2 v2.52.9
+	github.com/joho/godotenv v1.5.1
 	github.com/spf13/viper v1.21.0
 	gorm.io/driver/postgres v1.6.0
+	gorm.io/gorm v1.31.0
 )
 
 require (
@@ -39,5 +41,4 @@ require (
 	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/text v0.29.0 // indirect
-	gorm.io/gorm v1.31.0 // indirect
 )
