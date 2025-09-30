@@ -26,3 +26,7 @@ func (h *Handlers) Health(c *fiber.Ctx) error {
 		"data": h.repo.Stats(),
 	})
 }
+
+func (h *Handlers) ChangeEndpoint(c *fiber.Ctx) error {
+	return c.Redirect("/api/v1/health")
+}
