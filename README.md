@@ -17,7 +17,7 @@ cd frontend
 
 # once in the frontend folder
 npm install
-npm run start:android # to start the expo server
+npm run start # to start the expo server
 
 npm i -g eas-cli # to install eas cli globally
 

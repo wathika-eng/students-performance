@@ -1,15 +1,53 @@
+# Project backend
+
+One Paragraph of project description goes here
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+## MakeFile
+
+Run build make command with tests
 ```bash
-git clone https://github.com/wathika-eng/students-performance.git --depth 1 && cd students-performance/backend
-# if you don't have go installed, use # doesn't download the script ~ runs the script directly
-bash <(curl -sL https://git.io/go-installer)
+make all
+```
 
-go mod tidy # download dependencies
-# ensure you have a postgres database running and update the .env file with your credentials
-go run main.go
+Build the application
+```bash
+make build
+```
 
-air # for live reloads
+Run the application
+```bash
+make run
+```
+Create DB container
+```bash
+make docker-run
+```
 
-go build -tags netgo -ldflags '-s -w' -o app # build a static binary 
-./app # run the binary
+Shutdown DB Container
+```bash
+make docker-down
+```
 
+DB Integrations Test:
+```bash
+make itest
+```
+
+Live reload the application:
+```bash
+make watch
+```
+
+Run the test suite:
+```bash
+make test
+```
+
+Clean up binary from the last build:
+```bash
+make clean
 ```
